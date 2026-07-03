@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maida Lodge — Thư viện ảnh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600;1,800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f6f0e6; --paper-2:#efe6d6; --ink:#3b2f23; --ink-soft:#6b5a45;
+    --bronze:#9a6b32; --bronze-deep:#7c531f; --line:#d8c9af; --line-soft:#e6dac3;
+    --gold:#b58a4a; --shadow:rgba(60,42,20,.16);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--paper);color:var(--ink);font-family:'Be Vietnam Pro',sans-serif;-webkit-font-smoothing:antialiased;}
+  body{background:
+    radial-gradient(120% 80% at 5% 0%, #f0e8d6 0%, rgba(240,232,214,0) 55%),
+    radial-gradient(120% 80% at 95% 100%, #efe4d0 0%, rgba(239,228,208,0) 55%), var(--paper);
+    min-height:100vh;}
+  header{text-align:center;padding:30px 18px 10px;}
+  .mark{font-family:'Playfair Display',serif;font-weight:800;letter-spacing:.18em;font-size:12px;color:var(--bronze);text-transform:uppercase;}
+  h1{font-family:'Playfair Display',serif;font-weight:800;font-style:italic;font-size:clamp(30px,9vw,46px);color:var(--bronze-deep);line-height:1.02;margin:6px 0 4px;}
+  .sub{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
+  .rule{width:60px;height:1px;background:var(--gold);margin:14px auto 0;position:relative;}
+  .rule::before,.rule::after{content:"";position:absolute;top:-2px;width:5px;height:5px;background:var(--gold);border-radius:50%;}
+  .rule::before{left:-3px;} .rule::after{right:-3px;}
+
+  nav{position:sticky;top:0;z-index:20;background:rgba(246,240,230,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line-soft);margin-top:16px;}
+  .tabs{display:flex;gap:8px;overflow-x:auto;padding:11px 14px;max-width:920px;margin:0 auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .tabs::-webkit-scrollbar{display:none;}
+  .tab{flex:0 0 auto;border:1px solid var(--line);background:transparent;color:var(--ink-soft);font-family:'Be Vietnam Pro';font-size:13px;font-weight:600;padding:7px 15px;border-radius:30px;cursor:pointer;white-space:nowrap;transition:.16s;}
+  .tab.active{background:var(--bronze-deep);border-color:var(--bronze-deep);color:var(--paper);}
+
+  .grid{max-width:920px;margin:0 auto;padding:16px 12px 8px;display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
+  @media(min-width:620px){.grid{grid-template-columns:repeat(3,1fr);gap:11px;}}
+  .cell{position:relative;aspect-ratio:4/3;border-radius:13px;overflow:hidden;background:var(--paper-2);box-shadow:0 2px 9px var(--shadow);cursor:pointer;}
+  .cell img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .45s ease, transform .35s ease;}
+  .cell img.on{opacity:1;}
+  .cell:active img{transform:scale(.985);}
+  .cell .cap{position:absolute;left:0;right:0;bottom:0;padding:16px 11px 8px;color:#fff;font-size:11.5px;font-weight:600;background:linear-gradient(transparent,rgba(40,28,12,.6));pointer-events:none;}
+
+  .cta{max-width:920px;margin:14px auto 0;padding:0 16px;text-align:center;}
+  .cta a{display:inline-block;background:var(--bronze-deep);color:var(--paper);text-decoration:none;font-weight:600;font-size:14px;padding:12px 26px;border-radius:30px;box-shadow:0 3px 12px var(--shadow);}
+  .foot{max-width:920px;margin:18px auto 0;padding:18px 16px 40px;text-align:center;color:var(--ink-soft);font-size:12.5px;line-height:1.7;}
+  .foot a{color:var(--bronze-deep);text-decoration:none;font-weight:600;}
+
+  /* Lightbox */
+  .lb{position:fixed;inset:0;z-index:60;background:rgba(28,20,10,.94);display:none;align-items:center;justify-content:center;}
+  .lb.open{display:flex;}
+  .lb img{max-width:94vw;max-height:84vh;object-fit:contain;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.5);}
+  .lb .x{position:absolute;top:14px;right:16px;width:42px;height:42px;border:none;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;font-size:22px;cursor:pointer;}
+  .lb .nav-btn{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border:none;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .lb .prev{left:12px;} .lb .next{right:12px;}
+  .lb .count{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:rgba(255,255,255,.8);font-size:12.5px;letter-spacing:.05em;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="mark">Maida Lodge · Hồ Hòa Bình · Phú Thọ</div>
+  <h1>Thư viện ảnh</h1>
+  <div class="sub">Phòng nghỉ &amp; Không gian</div>
+  <div class="rule"></div>
+</header>
+
+<nav><div class="tabs" id="tabs"></div></nav>
+
+<div class="grid" id="grid"></div>
+
+<div class="cta">
+  <a href="https://maida-lodge.netlify.app" target="_blank" rel="noopener">Xem giá &amp; đặt phòng →</a>
+</div>
+
+<div class="foot">
+  <a href="https://maidalodge.com" target="_blank" rel="noopener">maidalodge.com</a><br>
+  Zalo / Hotline: 0982 015 445 · 0971 596 759
+</div>
+
+<div class="lb" id="lb">
+  <button class="x" id="lbClose" aria-label="Đóng">×</button>
+  <button class="nav-btn prev" id="lbPrev" aria-label="Trước">‹</button>
+  <img id="lbImg" src="" alt="">
+  <button class="nav-btn next" id="lbNext" aria-label="Sau">›</button>
+  <div class="count" id="lbCount"></div>
+</div>
+
+<script>
+/* ====== DỮ LIỆU: ảnh lấy từ Google Drive theo ID (gom theo hạng phòng) ====== */
+var DATA = [
+  {cat:"Deluxe",     ids:["18d03Z_suM6qsLBLK2VUQhanDDQApP3uB","1MVspPhSTieOp-f8TmihrzCB3E8W_2biC"]},
+  {cat:"SupDeluxe",  ids:["1bOkAwtob13ZVYP7l2nqh3poWIuCJcWZW","1_ripsWn0QDmJXH-JCeHgfnsuYThRMg9w"]},
+  {cat:"Bungalow",   ids:["1nqGLcZ-IRmkTR7263tL__Er4BMPAztOv","1R3KudD-oWtAbgBcVHa_C6Rs2kbhbdqEI","1KTG-ri7eRJiCVNO3ZMAu3FjYO0Bt-wZe","1wPqeomm4GtpK5ifHRBRPK97BnvEVO7qz","1--xiXCCLfNbUOU4uhft5rlZs_6pqRvSq","11yKI4mYhh3JZJIS3CJ2G9hGm5rpq8aPH","1zgmXcUfKMdqDHNo44datU-Jifs8Piy7Y","1uC5G9w4P_I9xiEBPVopgDpivudsYGRaA"]},
+  {cat:"Duplex",     ids:["1diqdjkRopglieBV-nBq1Kjjj73ubtWMe","1mN_NSK-2V6gTKG6Y-peXgVmG3TU6vEVF","1sHLjslg6_rXSmXTnQ2PCfg1rbsW86C4W","1x56rss3e0iJF6-2CirBObDmNeQhpblgv","1llwt7PkYgkzCxLzJuCdOomPakS47d9HL"]},
+  {cat:"Không gian", ids:["1d5_Q7uHtGWzOEF96pZ1xZwEmebElloCi","1mZ6AmRzj6ujA5DaJFnnJnmgR3AWZ7bkc","1IpkSvUmP0JhSAUyRTYkgmJXLS6Brnf1N","1bktI2jHAmoLNqtHgCVxCiyoPv-GYpbVq","1pw2GYtEphSEd_mF4AoWV8eoUNrXZXE15","1Tu28VsdaSSUCN3BKl9yoUdCdaEN6t8-u","1y4V5Ere9aj_iWzSY1y12HCNpOVIg_Hc2","1a9WlEQ7CpSSYVUG6TjiRavlVS5yeLnJ6","1HOeq1aGRy_hq_2AGTVl-rWwFgGTt-zIu","1V0o3FAlh8g8pbG-8Jax6DB1pOLm2aksG"]}
+];
+
+var thumb = function(id){ return "https://drive.google.com/thumbnail?id="+id+"&sz=w1000"; };
+var full  = function(id){ return "https://drive.google.com/thumbnail?id="+id+"&sz=w1600"; };
+
+/* Phẳng hóa thành danh sách ảnh */
+var ITEMS = [];
+DATA.forEach(function(g){ g.ids.forEach(function(id){ ITEMS.push({cat:g.cat, id:id}); }); });
+
+var CATS = ["Tất cả"].concat(DATA.map(function(g){return g.cat;}));
+var current = "Tất cả";
+var view = [];           // danh sách ảnh đang hiển thị (cho lightbox)
+
+/* Tabs */
+var tabsEl = document.getElementById('tabs');
+CATS.forEach(function(c){
+  var b=document.createElement('button');
+  b.className='tab'+(c===current?' active':'');
+  b.textContent=c;
+  b.onclick=function(){ current=c; render();
+    document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('active',t.textContent===c);});
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+  tabsEl.appendChild(b);
+});
+
+/* Lưới */
+var grid=document.getElementById('grid');
+function render(){
+  grid.innerHTML='';
+  view = current==="Tất cả" ? ITEMS.slice() : ITEMS.filter(function(it){return it.cat===current;});
+  view.forEach(function(it,idx){
+    var cell=document.createElement('div'); cell.className='cell';
+    var img=document.createElement('img');
+    img.loading='lazy'; img.decoding='async'; img.alt=it.cat;
+    img.src=thumb(it.id);
+    img.onload=function(){ img.classList.add('on'); };
+    img.onerror=function(){ cell.style.display='none'; };
+    var cap=document.createElement('span'); cap.className='cap'; cap.textContent=it.cat;
+    cell.appendChild(img);
+    if(current==="Tất cả") cell.appendChild(cap);
+    cell.onclick=function(){ openLb(idx); };
+    grid.appendChild(cell);
+  });
+}
+
+/* Lightbox */
+var lb=document.getElementById('lb'), lbImg=document.getElementById('lbImg'), lbCount=document.getElementById('lbCount');
+var lbIndex=0;
+function openLb(i){ lbIndex=i; showLb(); lb.classList.add('open'); document.body.style.overflow='hidden'; }
+function closeLb(){ lb.classList.remove('open'); document.body.style.overflow=''; }
+function showLb(){ var it=view[lbIndex]; lbImg.src=full(it.id); lbCount.textContent=(lbIndex+1)+' / '+view.length+'  ·  '+it.cat; }
+function step(d){ lbIndex=(lbIndex+d+view.length)%view.length; showLb(); }
+document.getElementById('lbClose').onclick=closeLb;
+document.getElementById('lbPrev').onclick=function(e){e.stopPropagation();step(-1);};
+document.getElementById('lbNext').onclick=function(e){e.stopPropagation();step(1);};
+lb.onclick=function(e){ if(e.target===lb) closeLb(); };
+document.addEventListener('keydown',function(e){
+  if(!lb.classList.contains('open'))return;
+  if(e.key==='Escape')closeLb(); else if(e.key==='ArrowLeft')step(-1); else if(e.key==='ArrowRight')step(1);
+});
+/* vuốt trên mobile */
+var tx=0;
+lb.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;},{passive:true});
+lb.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-tx; if(Math.abs(dx)>50)step(dx<0?1:-1);},{passive:true});
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<header>
+  <div class="wrap">
+    <div class="h-left">
+      <span class="h-title">Maida Lodge · Tạm tính</span>
+      <span class="badge-internal">NỘI BỘ</span>
+    </div>
+    <div class="h-btns">
+      <button class="h-btn" onclick="openPrices()" title="Sửa giá & ngày lễ">⚙︎ Sửa giá</button>
+      <button class="h-btn" onclick="resetAll()" title="Làm mới phiếu">↺ Làm mới</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="note-banner" id="noteBanner">
+    <span>ℹ️</span>
+    <div><b>Công cụ nội bộ cho Sale — không gửi trực tiếp cho khách.</b> Giá theo <b>Bảng giá Maida 2026 (đã gồm 8% VAT)</b>; phòng áp dụng <b>mùa hè 25/04 → 02/09/2026</b> (3 mức: trong tuần / T7 / lễ-tết). Mùa khác hoặc cập nhật ngày lễ: bấm <b>⚙︎ Sửa giá</b>.</div>
+  </div>
+
+  <!-- CUSTOMER -->
+  <div id="customerPanel">
+    <h2 class="sec">Thông tin khách</h2>
+    <div class="panel">
+      <div class="grid2">
+        <div class="field"><label>Tên khách (bên liên hệ)</label><input id="cName" placeholder="VD: Anh Minh – đoàn 8 khách"></div>
+        <div class="field"><label>SĐT / Zalo</label><input id="cPhone" inputmode="tel" placeholder="09xx xxx xxx"></div>
+      </div>
+      <div class="field" style="margin-top:10px;"><label>Nguồn khách (CRM)</label>
+        <select id="cSource"><option value="">— chọn nguồn —</option><option>Zalo OA</option><option>Facebook</option><option>OTA (Booking/Agoda)</option><option>Giới thiệu</option><option>Website</option><option>Walk-in</option><option>Khác</option></select>
+      </div>
+      <div class="grid3" style="margin-top:10px;">
+        <div class="field"><label>Ngày đến</label><input id="cIn" type="date" onchange="calcNights()"></div>
+        <div class="field"><label>Ngày đi</label><input id="cOut" type="date" onchange="calcNights()"></div>
+        <div class="field"><label>Số khách (NL / trẻ em)</label>
+          <div style="display:flex;gap:6px;">
+            <input id="cAdt" type="number" min="0" value="2" inputmode="numeric" title="Người lớn">
+            <input id="cChd" type="number" min="0" value="0" inputmode="numeric" title="Trẻ em">
+          </div>
+        </div>
+      </div>
+      <div><span class="nights-tag" id="nightsTag">Số đêm: —</span></div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs" id="tabs"></div>
+
+  <!-- GROUP CONTENT -->
+  <div id="groupContent"></div>
+
+  <!-- QUOTE (Phiếu tab) -->
+  <div id="quoteSection" style="display:none;">
+    <div class="seg-quote no-print">
+      <button id="qmEst" class="active" onclick="setQuoteMode('estimate')">🧾 Tạm tính</button>
+      <button id="qmInv" onclick="setQuoteMode('invoice')">📑 Phiếu thu</button>
+    </div>
+    <div id="invFields" class="inv-fields no-print" style="display:none;">
+      <div class="grid2">
+        <div class="field"><label>Mã đặt phòng</label><input id="iCode" placeholder="tự tạo" oninput="render()"></div>
+        <div class="field"><label>Người đặt</label><input id="iBookBy" placeholder="theo tên khách" oninput="render()"></div>
+        <div class="field"><label>Đại lý / Agent</label><input id="iAgent" placeholder="Trực tiếp" oninput="render()"></div>
+        <div class="field"><label>Số phòng</label><input id="iRooms" type="number" min="0" inputmode="numeric" placeholder="tự tính" oninput="render()"></div>
+        <div class="field"><label>Người xác nhận (Quản lý bán hàng)</label>
+          <select id="iReceiverSel" onchange="onReceiverSel()">
+            <option value="Thu Hà">Thu Hà</option>
+            <option value="Mai Khanh">Mai Khanh</option>
+            <option value="__custom">Tự điền…</option>
+          </select>
+        </div>
+        <div class="field"><label>Cọc giữ phòng (giờ)</label><input id="iHold" type="number" min="0" value="24" inputmode="numeric" oninput="render()"></div>
+        <div class="field" id="fldReceiverCustom" style="display:none;"><label>Tên người xác nhận</label><input id="iReceiver" placeholder="Nhập tên" oninput="render()"></div>
+      </div>
+      <div class="hint" style="margin-top:8px;">Mã & người đặt tự điền theo khách — sửa được. “Số phòng” tự ước theo số đêm-phòng đã chọn. Số tài khoản nhận tiền sửa trong <b>⚙︎ Sửa giá</b>.</div>
+    </div>
+    <h2 class="sec no-print">Ưu đãi</h2>
+    <div class="panel no-print">
+      <div class="disc-row">
+        <div class="field"><label>Loại ưu đãi</label>
+          <select id="discType" onchange="render()">
+            <option value="none">Không ưu đãi</option>
+            <option value="percent">Giảm theo % (toàn bộ)</option>
+            <option value="amount">Giảm số tiền (đ)</option>
+            <option value="partial">Giảm từng phần (theo nhóm)</option>
+          </select>
+        </div>
+        <div class="field" id="fldDiscVal"><label>Giá trị</label><input id="discVal" type="number" min="0" value="0" inputmode="numeric" oninput="render()"></div>
+        <div class="field" id="fldDiscLabel"><label>Nhãn ưu đãi</label><input id="discLabel" placeholder="VD: Đặt sớm, khách quen…" oninput="render()"></div>
+      </div>
+      <div class="disc-partial no-print" id="discPartial" style="display:none;"></div>
+      <div class="field" style="margin-top:10px;max-width:150px;"><label>Đặt cọc (%)</label>
+        <input id="depPct" type="number" min="0" max="100" value="50" inputmode="numeric" oninput="render()"></div>
+    </div>
+    <h2 class="sec no-print" id="quoteHeading">Phiếu tạm tính</h2>
+    <div id="quoteAudit" class="no-print" style="display:none;"></div>
+    <div id="quoteCard"></div>
+    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;" class="no-print">
+      <button class="btn-primary" onclick="downloadImage()" id="btnImg">📷 Tải ảnh phiếu (gửi Zalo)</button>
+      <button class="btn-ghost" onclick="window.print()">🖨️ In / Lưu PDF</button>
+      <button class="btn-ghost" onclick="copyQuote()">📋 Sao chép chữ</button>
+    </div>
+    <div class="hint no-print">Ảnh phiếu nét, khách dễ xem trên Zalo/Messenger. Trên điện thoại, “Tải ảnh” sẽ mở luôn cửa sổ chia sẻ.</div>
+    <pre id="quoteOut" style="display:none;"></pre>
+  </div>
+
+</div>
+
+<!-- SUMMARY -->
+<div class="summary">
+  <div class="wrap sum-grid">
+    <div class="sum-lines">
+      <div class="r"><span>Tạm tính</span><span id="sSub">0 ₫</span></div>
+      <div class="r disc" id="sDiscRow" style="display:none;"><span id="sDiscLbl">Ưu đãi</span><span id="sDisc">0 ₫</span></div>
+      <div class="r total"><span>TỔNG CỘNG</span><b id="sTotal">0 ₫</b></div>
+      <div class="r" style="font-size:11.5px;"><span id="sDepLbl">Cọc 50%</span><span id="sDep">0 ₫</span></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-direction:column;align-items:stretch;">
+      <button class="btn-primary" onclick="showTab('Phiếu')">Xem phiếu →</button>
+      <button onclick="saveLead()" style="background:#B8965A;color:#fff;border:none;border-radius:10px;padding:9px 14px;font-weight:700;cursor:pointer;font-size:13px;">📋 Lưu lead CRM</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRICE MODAL -->
+<div class="modal" id="priceModal">
+  <div class="modal-card">
+    <div class="modal-head"><h3>⚙︎ Sửa bảng giá</h3><button class="x" onclick="closePrices()">×</button></div>
+    <p class="hint">Nhập giá VNĐ (không dấu chấm). Phòng có 3 ô = Trong tuần / T7 / Lễ-Tết. Số lưu trên trình duyệt máy này.</p>
+    <div style="margin:4px 0 14px;padding:11px 12px;background:#fff;border:1px solid var(--line);border-radius:11px;">
+      <label style="font-weight:700;font-size:13px;display:block;margin-bottom:7px;">Tài khoản nhận tiền (in trên Phiếu thu + mã QR)</label>
+      <div class="grid2" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="field"><label>Tên tài khoản</label><input id="bkName"></div>
+        <div class="field"><label>Số tài khoản</label><input id="bkAcc" inputmode="numeric"></div>
+        <div class="field"><label>Ngân hàng (hiển thị)</label><input id="bkBank"></div>
+        <div class="field"><label>Mã NH VietQR (BIN)</label><input id="bkBin" inputmode="numeric" placeholder="970418 = BIDV"></div>
+      </div>
+      <p class="hint" style="margin:6px 0 0;">BIN: BIDV 970418 · Vietcombank 970436 · Vietinbank 970415 · MB 970422 · ACB 970416 · Techcombank 970407 · Agribank 970405. Sai BIN thì QR không quét đúng ngân hàng.</p>
+    </div>
+    <div style="margin:4px 0 14px;padding:11px 12px;background:var(--cream);border:1px solid var(--line);border-radius:11px;">
+      <label style="font-weight:700;font-size:13px;display:block;margin-bottom:5px;">Ngày Lễ / Tết — mỗi dòng một ngày (NGÀY/THÁNG/NĂM)</label>
+      <textarea id="holEdit" class="hol-edit" placeholder="30/04/2026&#10;01/05/2026&#10;02/09/2026"></textarea>
+      <p class="hint" style="margin:5px 0 0;">Đêm rơi vào các ngày này tự tính mức <b>Lễ/Tết</b>. Đêm <b>Thứ 7</b> tự nhận mức T7 — không cần nhập. Cập nhật danh sách mỗi năm tại đây (gồm cả Tết Nguyên đán).</p>
+    </div>
+    <div id="priceEditList"></div>
+    <div style="display:flex;gap:8px;margin-top:14px;">
+      <button class="btn-primary" onclick="savePrices()">Lưu giá</button>
+      <button class="btn-ghost" onclick="restoreDefaults()">Khôi phục mặc định</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>

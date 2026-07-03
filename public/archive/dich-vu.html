@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Maida Lodge — Dịch vụ & Trải nghiệm</title>
+<style>
+  :root{--forest:#2C3E2D;--moss:#4A6741;--sage:#7A9B6F;--mist:#D4E2C8;--cream:#F5F0E8;--sand:#EDE3D0;--stone:#C8B89A;--gold:#B8965A;--terra:#B5663C;--ink:#2b2b26;--line:#e3dccb;}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.55;padding-bottom:24px;}
+  .wrap{max-width:680px;margin:0 auto;}
+  .sitebar{display:flex;background:var(--cream);border-bottom:1px solid var(--line);padding-inline:max(0px,calc((100% - 680px)/2));}
+  .sitebar a{flex:1;text-align:center;padding:7px 1px 6px;text-decoration:none;color:var(--moss);font-weight:600;border-bottom:2px solid transparent;}
+  .sitebar a .ic{display:block;font-size:16px;line-height:1.25;}
+  .sitebar a .tx{font-size:10.5px;}
+  .sitebar a em{display:block;font-size:8.5px;font-style:normal;color:var(--sage);font-weight:400;line-height:1.1;}
+  .sitebar a.active{color:var(--forest);border-bottom-color:var(--gold);background:#fff;}
+  header.hero{background:var(--forest);color:var(--cream);text-align:center;padding:18px 16px 16px;}
+  header.hero img{height:64px;display:block;margin:0 auto 6px;}
+  header.hero .ttl{font-family:Georgia,serif;font-size:23px;letter-spacing:1.5px;font-weight:700;}
+  header.hero .ttl span{display:block;font-size:10.5px;letter-spacing:4px;color:var(--stone);font-weight:600;margin-top:2px;}
+  header.hero .sub{font-size:12px;color:var(--mist);margin-top:7px;line-height:1.55;}
+  .arrive{max-width:680px;margin:0 auto;position:relative;background:var(--forest);}
+  .arrive .track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+  .arrive .track::-webkit-scrollbar{display:none;}
+  .arrive figure{flex:0 0 100%;scroll-snap-align:center;margin:0;position:relative;aspect-ratio:16/10;}
+  .arrive figure img{width:100%;height:100%;object-fit:cover;display:block;}
+  .arrive figcaption{position:absolute;left:0;right:0;bottom:0;padding:30px 16px 12px;background:linear-gradient(transparent,rgba(20,28,20,.82));color:var(--cream);font-size:14px;font-weight:600;font-family:Georgia,serif;letter-spacing:.3px;}
+  .arrive .acount{position:absolute;top:9px;right:10px;background:rgba(20,28,20,.55);color:#fff;font-size:11px;font-weight:600;padding:4px 10px;border-radius:11px;letter-spacing:.3px;}
+  .intro{background:var(--sand);border-bottom:1px solid var(--line);padding:13px 18px;}
+  .intro p{margin:0 auto;max-width:640px;font-size:13px;line-height:1.62;color:var(--ink);text-align:center;}
+  .intro b{color:var(--forest);}
+  .intro .en{display:block;font-size:11px;font-style:italic;color:var(--moss);margin-top:4px;}
+  .chips{position:sticky;top:0;z-index:40;display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;background:var(--sand);border-bottom:1px solid var(--line);padding:9px max(12px,calc((100% - 680px)/2));}
+  .chips::-webkit-scrollbar{display:none;}
+  .chips a{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-size:13px;font-weight:700;color:var(--forest);background:#fff;border:1px solid var(--line);border-radius:11px;padding:8px 13px;white-space:nowrap;box-shadow:0 1px 2px rgba(44,62,45,.06);}
+  .chips a i{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+  .chips a:active{background:var(--mist);}
+  main{padding:8px 14px 14px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;margin:14px 0;scroll-margin-top:60px;}
+  .card .lead{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;}
+  .card .bd{padding:14px 17px 16px;}
+  .card h2{font-family:Georgia,serif;font-size:20px;color:var(--forest);margin:0 0 7px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
+  .card h2 em{font-style:normal;font-size:11.5px;font-weight:400;color:var(--sage);font-family:-apple-system,sans-serif;letter-spacing:.5px;}
+  .card p.d{margin:0 0 10px;font-size:13.5px;color:#46443c;}
+  .card p.d .en{display:block;font-size:11px;font-style:italic;color:var(--sage);margin-top:2px;}
+  ul.prc{list-style:none;margin:0;padding:0;}
+  ul.prc li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);}
+  ul.prc li:last-child{border-bottom:0;}
+  ul.prc .nm{font-size:13.5px;color:var(--ink);}
+  ul.prc .nm em{display:block;font-style:normal;font-size:10.5px;color:var(--sage);margin-top:1px;}
+  ul.prc .pr{flex-shrink:0;text-align:right;font-weight:700;font-size:13.5px;color:var(--terra);white-space:nowrap;}
+  ul.prc .pr small{display:block;font-weight:400;font-size:10px;color:var(--sage);}
+  ul.prc .pr.free{color:var(--moss);}
+  ul.prc .pr.lh{color:var(--moss);font-weight:600;}
+  .xlink{display:inline-block;margin-top:10px;font-size:12.5px;font-weight:700;color:var(--terra);text-decoration:none;border-bottom:1px solid var(--stone);}
+  .booknote{background:var(--mist);border:1px solid var(--line);border-radius:16px;padding:15px 17px;margin:16px 0 0;text-align:center;}
+  .booknote p{margin:0 0 12px;font-size:13px;color:var(--ink);}
+  .booknote p .en{display:block;font-size:11px;font-style:italic;color:var(--moss);margin-top:3px;}
+  .zalo{display:block;text-decoration:none;background:#0068FF;color:#fff;border-radius:12px;padding:12px;font-weight:700;font-size:15px;}
+  footer{background:#243425;color:var(--mist);font-size:12px;line-height:1.7;padding:18px 16px 26px;text-align:center;}
+  footer b{color:var(--cream);}
+  .footnav{display:flex;justify-content:center;gap:6px 14px;flex-wrap:wrap;margin:0 0 12px;}
+  .footnav a{color:var(--stone);text-decoration:none;font-size:12px;font-weight:600;}
+  .footnav a.cur{color:var(--cream);border-bottom:1px solid var(--gold);}
+@media(min-width:900px){
+  .arrive{max-width:1060px;}
+  main.wrap{max-width:1060px;column-count:2;column-gap:22px;}
+  main.wrap .card{break-inside:avoid;-webkit-column-break-inside:avoid;margin:0 0 22px;}
+}
+</style>
+</head>
+<body>
+<nav class="sitebar">
+  <a href="https://maida-anh.netlify.app/"><span class="ic">📷</span><span class="tx">Ảnh</span><em>Photos</em></a>
+  <a href="https://maida-room.netlify.app/"><span class="ic">🛏️</span><span class="tx">Phòng</span><em>Rooms</em></a>
+  <a href="https://maida-menu.netlify.app/"><span class="ic">🍽️</span><span class="tx">Thực đơn</span><em>Menu</em></a>
+  <a class="active"><span class="ic">🌿</span><span class="tx">Dịch vụ</span><em>Services</em></a>
+  <a href="https://maida-huongdan.netlify.app/"><span class="ic">🧭</span><span class="tx">Hướng dẫn</span><em>Guide</em></a>
+</nav>
+
+<header class="hero">
+  <img src="data:image/png;base64,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" alt="Maida Lodge">
+  <div class="ttl">DỊCH VỤ & TRẢI NGHIỆM<span>SERVICES & EXPERIENCES</span></div>
+  <div class="sub">Mỗi ngày bên hồ Hoà Bình là một trải nghiệm<br>Every day by the lake is an experience</div>
+</header>
+
+<div class="arrive">
+  <div class="track" id="atrack">
+    <figure><img src="img/cheo-kayak.jpg" loading="lazy" alt="Chèo kayak trên hồ"><figcaption>Chèo kayak ngắm núi non hùng vĩ</figcaption></figure>
+    <figure><img src="img/tam-la-thuoc.jpg" loading="lazy" alt="Tắm lá thuốc người Dao"><figcaption>Tắm lá thuốc người Dao bên hồ</figcaption></figure>
+    <figure><img src="img/bbq.jpg" loading="lazy" alt="Tiệc nướng ngoài trời"><figcaption>Tiệc nướng ngoài trời bên hồ</figcaption></figure>
+    <figure><img src="img/dan-ro-tom.jpg" loading="lazy" alt="Đan rọ tôm cùng nghệ nhân"><figcaption>Đan rọ tôm cùng nghệ nhân Mường</figcaption></figure>
+    <figure><img src="img/sinh-nhat.jpg" loading="lazy" alt="Sinh nhật cho bé"><figcaption>Tổ chức sinh nhật cho các bé</figcaption></figure>
+    <figure><img src="img/cuoi-1.jpg" loading="lazy" alt="Cưới bên hồ"><figcaption>Đám cưới bên hồ Hoà Bình</figcaption></figure>
+    <figure><img src="img/ca-nuong.jpg" loading="lazy" alt="Cá nướng đặc sản"><figcaption>Cá nướng đặc sản bên hồ</figcaption></figure>
+    <figure><img src="img/van-nghe.jpg" loading="lazy" alt="Văn nghệ dân tộc"><figcaption>Văn nghệ dân tộc Mường</figcaption></figure>
+    <figure><img src="img/tro-choi.jpg" loading="lazy" alt="Trò chơi dân gian"><figcaption>Trò chơi dân gian cho các bé</figcaption></figure>
+    <figure><img src="img/retreat.jpg" loading="lazy" alt="Retreat & team building"><figcaption>Retreat &amp; team building bên hồ</figcaption></figure>
+  </div>
+  <div class="acount"><span id="acur">1</span>/10 · gạt ngang →</div>
+</div>
+
+<div class="intro">
+  <p>Maida không chỉ là nơi nghỉ. Chèo hồ, ngâm lá thuốc người Dao, đan rọ tôm, tiệc nướng, cưới bên hồ — mỗi trải nghiệm gắn với thiên nhiên và văn hoá vùng lòng hồ <b>Hoà Bình</b>.<span class="en">More than a stay — paddling, Dao herbal baths, craft workshops, lakeside feasts and weddings, all rooted in the lake's nature and culture.</span></p>
+</div>
+
+<nav class="chips" id="chips"></nav>
+
+<main class="wrap">
+
+  <section class="card" id="sec-ho" style="border-top:3px solid #B5663C">
+    <img class="lead" src="img/cheo-kayak.jpg" loading="lazy" alt="Trên lòng hồ">
+    <div class="bd">
+      <h2>🛶 Trên lòng hồ &amp; khám phá <em>On the lake</em></h2>
+      <p class="d">Chèo SUP, kayak trên mặt hồ phẳng lặng; lên tàu du ngoạn vịnh Ngòi Hoa hoặc theo lịch trình khám phá Bản Sưng – Bản Mó Hém – Đền Thác Bờ.<span class="en">Paddle the calm lake, cruise Ngòi Hoa bay, or follow the Bản Sưng – Mó Hém – Thác Bờ discovery route.</span></p>
+      <ul class="prc">
+        <li><span class="nm">Ván hơi SUP (1 người)<em>Stand-up paddleboard</em></span><span class="pr">150.000đ<small>/lượt</small></span></li>
+        <li><span class="nm">Kayak (2 người)<em>Kayak</em></span><span class="pr">250.000đ<small>/lượt</small></span></li>
+        <li><span class="nm">Tour Trekking &amp; Kayak (2–6 khách)<em>Trek ~45' + kayak</em></span><span class="pr">450.000đ<small>/khách</small></span></li>
+        <li><span class="nm">Tour Trekking &amp; Kayak (7–15 khách)<em>Trek + kayak</em></span><span class="pr">350.000đ<small>/khách</small></span></li>
+        <li><span class="nm">Tàu đi chơi hồ (1–17 khách, quanh Maida)<em>Sightseeing boat</em></span><span class="pr">600.000đ<small>/giờ</small></span></li>
+        <li><span class="nm">Tàu du ngoạn hồ (18+ khách)<em>Lake tour</em></span><span class="pr lh">Liên hệ</span></li>
+        <li><span class="nm">Tàu đưa đón Ngòi Hoa–Maida (1–17 khách)<em>Boat transfer · after 18h: 750.000đ</em></span><span class="pr">550.000đ<small>/lượt</small></span></li>
+        <li><span class="nm">Tàu đưa đón (18–35 khách)<em>Boat transfer</em></span><span class="pr">2.000.000đ<small>/lượt</small></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card" id="sec-thugian" style="border-top:3px solid #7A9B6F">
+    <img class="lead" src="img/tam-la-thuoc.jpg" loading="lazy" alt="Thư giãn">
+    <div class="bd">
+      <h2>🧘 Thư giãn &amp; sức khoẻ <em>Wellness</em></h2>
+      <p class="d">Bình minh tập yoga bên bể bơi vô cực nhìn ra hồ; chiều ngâm chân, tắm lá thuốc người Dao xua tan mệt mỏi.<span class="en">Sunrise yoga by the infinity pool; afternoon Dao herbal foot baths and soaks.</span></p>
+      <ul class="prc">
+        <li><span class="nm">Bể bơi vô cực<em>Infinity pool</em></span><span class="pr free">Đã gồm<small>trong giá phòng</small></span></li>
+        <li><span class="nm">Morning Yoga (sàn tre) · Maida cung cấp thảm tập miễn phí<em>Bamboo-deck yoga · free mats provided</em></span><span class="pr lh">Liên hệ</span></li>
+        <li><span class="nm">Ngâm chân lá thuốc người Dao<em>Dao herbal foot bath</em></span><span class="pr">120.000đ<small>/chậu</small></span></li>
+        <li><span class="nm">Bồn tắm lá thuốc người Dao<em>Dao herbal soaking bath</em></span><span class="pr">300.000đ<small>/bồn</small></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card" id="sec-amthuc" style="border-top:3px solid #B8965A">
+    <img class="lead" src="img/bbq.jpg" loading="lazy" alt="Ẩm thực bên hồ">
+    <div class="bd">
+      <h2>🔥 Ẩm thực bên hồ <em>Lakeside dining</em></h2>
+      <p class="d">Mâm cơm đặc sản Mường dọn ngay bên mặt nước; tối quây quần tiệc nướng ngoài trời bên hồ.<span class="en">Mường specialties served by the water and evening lakeside BBQ.</span></p>
+      <ul class="prc">
+        <li><span class="nm">Set bếp nướng ngô khoai (5–8 người)<em>Grill set</em></span><span class="pr">500.000đ<small>/set</small></span></li>
+        <li><span class="nm">Set bếp nướng ngô khoai (15–20 người)<em>Grill set</em></span><span class="pr">1.000.000đ<small>/set</small></span></li>
+      </ul>
+      <a class="xlink" href="https://maida-menu.netlify.app/" target="_blank" rel="noopener">🍽️ Xem thực đơn đặc sản →</a>
+    </div>
+  </section>
+
+  <section class="card" id="sec-vanhoa" style="border-top:3px solid #4A6741">
+    <img class="lead" src="img/dan-ro-tom.jpg" loading="lazy" alt="Văn hoá & đời sống Mường – Dao Tiền">
+    <div class="bd">
+      <h2>🎋 Văn hoá &amp; đời sống Mường – Dao Tiền <em>Mường &amp; Dao Tiền culture</em></h2>
+      <p class="d">Đan rọ tôm cùng nghệ nhân Mường, thăm bản người Dao Tiền tìm hiểu nghề nhuộm chàm – thêu thổ cẩm, xem văn nghệ dân tộc, ghé quầy đặc sản tự giác.<span class="en">Weave with Mường artisans, visit a Dao Tiền village, enjoy folk performances and the honesty stall.</span></p>
+      <ul class="prc">
+        <li><span class="nm">Workshop đan rọ tôm (2–5 khách)<em>Shrimp-trap weaving</em></span><span class="pr">250.000đ<small>/khách</small></span></li>
+        <li><span class="nm">Workshop đan rọ tôm (6–10 khách)<em>Shrimp-trap weaving</em></span><span class="pr">200.000đ<small>/khách</small></span></li>
+        <li><span class="nm">Văn nghệ dân tộc (đặt show)<em>Ethnic folk performance</em></span><span class="pr">3.500.000đ<small>/show</small></span></li>
+        <li><span class="nm">Thăm bản người Dao Tiền · giao lưu văn hoá<em>Dao Tiền village visit</em></span><span class="pr lh">Liên hệ</span></li>
+        <li><span class="nm">Quầy đặc sản tự giác<em>Honesty stall</em></span><span class="pr lh">Tự chọn</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card" id="sec-giadinh" style="border-top:3px solid #C8B89A">
+    <img class="lead" src="img/sinh-nhat.jpg" loading="lazy" alt="Gia đình & vui chơi">
+    <div class="bd">
+      <h2>👨‍👩‍👧 Gia đình &amp; vui chơi <em>Family &amp; play</em></h2>
+      <p class="d">Bi lắc, cờ, trò chơi dân gian (kéo co, nhảy bao); tổ chức sinh nhật, trung thu cho các bé ngay trong khuôn viên.<span class="en">Foosball, board &amp; folk games; birthdays and kids' celebrations on site.</span></p>
+      <ul class="prc">
+        <li><span class="nm">Bi lắc · cờ · trò chơi dân gian<em>Foosball &amp; folk games</em></span><span class="pr free">Miễn phí<small>khách lưu trú</small></span></li>
+        <li><span class="nm">Tổ chức sinh nhật · trung thu<em>Birthday &amp; festive set-ups</em></span><span class="pr lh">Liên hệ</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card" id="sec-sukien" style="border-top:3px solid #2C3E2D">
+    <img class="lead" src="img/cuoi-1.jpg" loading="lazy" alt="Sự kiện & cưới hỏi">
+    <div class="bd">
+      <h2>💍 Sự kiện &amp; cưới hỏi <em>Events &amp; weddings</em></h2>
+      <p class="d">Lễ cưới bên hồ với phông nền núi nước; hội trường &amp; nhà đa năng cho hội nghị – gala – team building, kèm tiệc trà (teabreak) giữa vườn, đầy đủ âm thanh ánh sáng.<span class="en">Lakeside weddings, plus a function hall for conferences, galas and team building with garden tea breaks.</span></p>
+      <ul class="prc">
+        <li><span class="nm">Thuê địa điểm tổ chức sự kiện<em>Event venue rental</em></span><span class="pr">5.000.000đ<small>/ngày</small></span></li>
+        <li><span class="nm">Phòng đa năng (4 tiếng)<em>Function room (4 hrs)</em></span><span class="pr">5.000.000đ<small>/buổi</small></span></li>
+        <li><span class="nm">Teabreak (15–20 người)<em>Tea break</em></span><span class="pr">2.500.000đ<small>/set</small></span></li>
+        <li><span class="nm">Teabreak (30–40 người)<em>Tea break</em></span><span class="pr">3.500.000đ<small>/set</small></span></li>
+        <li><span class="nm">Âm ly, loa, mic<em>Sound system</em></span><span class="pr">2.000.000đ<small>/lượt</small></span></li>
+        <li><span class="nm">Văn nghệ dân tộc<em>Folk performance</em></span><span class="pr">3.500.000đ<small>/show</small></span></li>
+        <li><span class="nm">Phí phục vụ ăn tại phòng đa năng<em>In-room dining service</em></span><span class="pr">1.000.000đ<small>/bữa</small></span></li>
+        <li><span class="nm">Phí phục vụ đồ uống<em>Beverage service</em></span><span class="pr">500.000đ<small>/mâm·bữa</small></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="booknote">
+    <p>Đặt trải nghiệm trước tối thiểu <b>24h</b>, hoặc tại lễ tân khi lưu trú. Giá có thể thay đổi theo mùa.<span class="en">Book at least 24h ahead or at reception. Prices may vary by season.</span></p>
+    <a class="zalo" href="https://zalo.me/0982015445" target="_blank" rel="noopener">💬 Nhắn Zalo đặt trải nghiệm · 0982 015 445</a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footnav">
+    <a href="https://maida-anh.netlify.app/">Ảnh</a>
+    <a href="https://maida-room.netlify.app/">Phòng &amp; giá</a>
+    <a href="https://maida-menu.netlify.app/">Thực đơn</a>
+    <a class="cur">Dịch vụ &amp; trải nghiệm</a>
+    <a href="https://maida-huongdan.netlify.app/">Hướng dẫn</a>
+  </div>
+  Hồ Hoà Bình · Tiền Phong · Phú Thọ<br>
+  Zalo / Hotline: <b>0982 015 445</b> · <b>0971 596 759</b> · maidalodge.com
+</footer>
+
+<script>
+const SEC=[['sec-ho','Lòng hồ','#B5663C'],['sec-thugian','Thư giãn','#7A9B6F'],['sec-amthuc','Ẩm thực','#B8965A'],['sec-vanhoa','Văn hoá','#4A6741'],['sec-giadinh','Gia đình','#C8B89A'],['sec-sukien','Sự kiện','#2C3E2D']];
+document.getElementById('chips').innerHTML=SEC.map(([id,t,c])=>`<a href="#${id}"><i style="background:${c}"></i>${t}</a>`).join('');
+(function(){var t=document.getElementById('atrack');if(t){t.addEventListener('scroll',function(){var i=Math.round(t.scrollLeft/t.clientWidth)+1;var c=document.getElementById('acur');if(c)c.textContent=i;},{passive:true});}})();
+</script>
+</body>
+</html>
