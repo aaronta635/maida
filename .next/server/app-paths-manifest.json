@@ -1,7 +1,0 @@
-{
-  "/page": "app/page.js",
-  "/crm/page": "app/crm/page.js",
-  "/crm/sale/page": "app/crm/sale/page.js",
-  "/crm/capture/page": "app/crm/capture/page.js",
-  "/staff/page": "app/staff/page.js"
-}
