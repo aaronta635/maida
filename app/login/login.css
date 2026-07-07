@@ -1,0 +1,102 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: #f5f0e8;
+  font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  background: #fff;
+  border: 1px solid #e3dccb;
+  border-radius: 14px;
+  padding: 28px 24px;
+  box-shadow: 0 2px 14px rgba(44, 62, 45, 0.08);
+}
+
+.login-back {
+  font-size: 13px;
+  color: #b8965a;
+  text-decoration: none;
+}
+
+.login-card h1 {
+  margin: 16px 0 4px;
+  font-family: Georgia, serif;
+  font-size: 26px;
+  color: #2c3e2d;
+}
+
+.login-sub {
+  margin: 0 0 20px;
+  font-size: 14px;
+  color: #6b6555;
+}
+
+.login-form .field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.login-form label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #4a6741;
+}
+
+.login-form input {
+  border: 1px solid #e3dccb;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 15px;
+  font-family: inherit;
+  background: #f5f0e8;
+}
+
+.login-form input:focus {
+  outline: none;
+  border-color: #7a9b6f;
+  background: #fff;
+}
+
+.login-btn {
+  width: 100%;
+  margin-top: 6px;
+  padding: 11px;
+  border: none;
+  border-radius: 9px;
+  background: #b8965a;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.login-btn:hover:not(:disabled) {
+  background: #a8854a;
+}
+
+.login-btn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.login-err {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: #8a3b2e;
+}
+
+.login-hint {
+  margin: 14px 0 0;
+  font-size: 12px;
+  color: #8a8472;
+  text-align: center;
+}

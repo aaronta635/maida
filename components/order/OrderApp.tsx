@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { ZONES } from '@/data/zones';
 import type { SelectedItem, ZoneItem } from '@/data/types';
-import { createOrderWithItems } from '@/lib/crm/orders';
+import { submitGuestOrder } from '@/lib/crm/orders';
 import type { RoomRateType } from '@/lib/crm/types';
 import '@/app/order.css';
 
@@ -107,7 +107,7 @@ export default function OrderApp() {
     if (!selected.length) return showToast('Quý khách chưa chọn mục nào');
     if (!guest.name || !guest.phone) return showToast('Vui lòng điền tên và số điện thoại');
     setSubmitting(true);
-    const { error } = await createOrderWithItems(
+    const { ok, error } = await submitGuestOrder(
       {
         customer_name: guest.name,
         customer_phone: guest.phone,
@@ -130,7 +130,7 @@ export default function OrderApp() {
       })),
     );
     setSubmitting(false);
-    if (error) {
+    if (!ok || error) {
       showToast('Gửi thất bại — vui lòng thử lại hoặc nhắn Zalo.');
       return;
     }

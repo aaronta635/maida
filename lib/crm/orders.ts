@@ -9,10 +9,30 @@ import type {
 
 const PAGE_SIZE = 50;
 
+/** Guest order intake — server-side only (no anon Supabase access). */
+export async function submitGuestOrder(
+  order: CreateOrderInput,
+  items: CreateOrderItemInput[],
+): Promise<{ ok: boolean; error?: string }> {
+  const res = await fetch('/api/orders', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ order, items }),
+  });
+
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    return { ok: false, error: (data as { error?: string }).error ?? 'Request failed' };
+  }
+
+  return { ok: true };
+}
+
+/** Staff-only: create order + items (requires authenticated session). */
 export async function createOrderWithItems(
   order: CreateOrderInput,
   items: CreateOrderItemInput[],
-): Promise<{ order: Order; error?: string }> {
+): Promise<{ order: Order | null; error?: string }> {
   const sb = createBrowserClient();
 
   const { data: created, error: orderError } = await sb
@@ -32,7 +52,7 @@ export async function createOrderWithItems(
     .single();
 
   if (orderError || !created) {
-    return { order: created as Order, error: orderError?.message ?? 'Failed to create order' };
+    return { order: null, error: orderError?.message ?? 'Failed to create order' };
   }
 
   if (items.length) {
@@ -58,15 +78,12 @@ export async function createOrderWithItems(
   return { order: created as Order };
 }
 
-/** Save a sales quote as a CRM lead (orders table) */
+/** Save a sales quote as a CRM lead (orders table) — staff session required. */
 export async function saveLeadToCrm(lead: LeadInput): Promise<{ ok: boolean; error?: string }> {
-  const pax =
-    (lead.adults ?? 0) + (lead.children ?? 0) || null;
+  const pax = (lead.adults ?? 0) + (lead.children ?? 0) || null;
 
   const dates =
-    lead.checkIn && lead.checkOut
-      ? `${lead.checkIn} → ${lead.checkOut}`
-      : null;
+    lead.checkIn && lead.checkOut ? `${lead.checkIn} → ${lead.checkOut}` : null;
 
   const { error } = await createOrderWithItems(
     {

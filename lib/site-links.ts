@@ -1,9 +1,12 @@
 export const navLinks = [
   { href: '/', label: 'Trang chủ' },
   { href: '/order', label: 'Khách đặt trước' },
+  { href: '/archive', label: 'Archive' },
+] as const;
+
+export const staffLinks = [
   { href: '/staff', label: 'Quản lý đơn' },
   { href: '/crm', label: 'CRM' },
-  { href: '/archive', label: 'Archive' },
 ] as const;
 
 export const hubSections = [
@@ -16,7 +19,8 @@ export const hubSections = [
   {
     title: 'Nội bộ',
     links: [
-      { href: '/staff', label: 'Quản lý đơn', desc: 'Lễ tân — theo dõi đơn realtime (Supabase)' },
+      { href: '/login', label: 'Đăng nhập nhân viên', desc: 'Sale · Lễ tân — CRM & quản lý đơn' },
+      { href: '/staff', label: 'Quản lý đơn', desc: 'Lễ tân — theo dõi đơn realtime (cần đăng nhập)' },
       { href: '/crm/sale', label: 'CRM · Báo giá / tạm tính', desc: 'Sale — tính giá, xuất phiếu, lưu lead' },
       { href: '/crm/capture', label: 'CRM · Nhập liệu', desc: 'Cọc · check-in · đánh giá' },
     ],

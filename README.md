@@ -34,9 +34,48 @@ Báo giá → lead → Cọc → check-in → Đánh giá
 
 | Variable | Required | Purpose |
 |----------|----------|---------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Yes | Orders & leads |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | |
+| `NEXT_PUBLIC_SUPABASE_URL` | Yes | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | Browser client (staff session only) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Yes | Server-only — guest `/order` via `/api/orders` |
 | `NEXT_PUBLIC_CRM_ENDPOINT` | No | Webhook for TSV/CRM rows (optional) |
+
+**Never** prefix `SUPABASE_SERVICE_ROLE_KEY` with `NEXT_PUBLIC_`.
+
+## Security (required before real guest data)
+
+### 1. Auth — `/staff` and `/crm/*`
+
+Middleware redirects unauthenticated users to `/login`. Create staff users in Supabase → **Authentication → Users**.
+
+Set **URL Configuration**:
+
+- Site URL: `https://maida-nine.vercel.app` (or your domain)
+- Redirect URLs: `https://maida-nine.vercel.app/auth/callback`
+
+### 2. RLS — block anon REST access
+
+Run **`docs/supabase-auth-rls.sql`** in Supabase SQL Editor. This:
+
+- Enables RLS on `orders` and `order_items`
+- Grants **no** policies to `anon` (anon key cannot read/write via REST)
+- Grants `authenticated` staff SELECT/INSERT/UPDATE
+
+Verify: `GET https://<project>.supabase.co/rest/v1/orders?select=*` with anon key → empty / 401.
+
+### 3. Guest orders — server-side intake
+
+`/order` POSTs to `/api/orders` (Next.js route handler). The server uses `SUPABASE_SERVICE_ROLE_KEY` — guests never touch Supabase directly.
+
+## Auth (staff / CRM)
+
+`/staff` and `/crm/*` require login. Guests can still use `/`, `/order`, `/archive` without an account.
+
+1. Supabase → **Authentication** → enable Email provider.
+2. **Users** → Add user (email + password) for each staff member.
+3. Run **`docs/supabase-auth-rls.sql`** in SQL Editor.
+4. Add env vars on Vercel (including `SUPABASE_SERVICE_ROLE_KEY`).
+
+Login page: `/login`
 
 ## Scripts
 
@@ -82,7 +121,7 @@ This repo **is** the Next.js app (files at repo root). In Vercel → **Project �
 | **Framework Preset** | Next.js |
 | **Build Command** | `npm run build` (default) |
 
-Add env vars: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+Add env vars: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`.
 
 If deploy fails with `path0/path0/.next/routes-manifest.json`:
 
